@@ -79,4 +79,4 @@ max_printed_area = max_printed_word_width * max_printed_word_height
 inputmanipulator = InputManipulator(writer, max_printed_word_width, max_printed_word_height)
 outputmanipulator = OutputManipulator(max_word_length*2)
 
-data_iterator_instance = DataIteratorInput(decoding_vocabulary, batch_size, batch_load_per_decoding_step, inputmanipulator)
+data_iterator_decode = DataIteratorInput(decoding_vocabulary, batch_size, batch_load_per_decoding_step, inputmanipulator)

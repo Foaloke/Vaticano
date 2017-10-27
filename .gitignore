@@ -2,5 +2,6 @@ LSTM/
 .metadata
 .recommenders
 Valla/venv/
+Valla/model_checkpoints/
 DaGubbio/venv/
 PythonUtils/venv/

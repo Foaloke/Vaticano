@@ -78,7 +78,6 @@ writer.create_text_strip("test", "test")
 columniser = Columniser()
 
 ''' Training Config '''
-max_epochs = int(cfg_training['max_epochs'])
 batch_size = int(cfg_training['batch_size'])
 batch_load_per_validation_step = int(cfg_training['batch_load_per_validation_step'])
 
@@ -92,4 +91,4 @@ max_printed_area = max_printed_word_width * max_printed_word_height
 inputmanipulator = InputManipulator(writer, max_printed_word_width, max_printed_word_height)
 outputmanipulator = OutputManipulator(max_word_length*2)
 
-data_iterator_instance = DataIteratorInputOutput(validation_vocabulary, batch_size, batch_load_per_validation_step, inputmanipulator, outputmanipulator)
+data_iterator_validation = DataIteratorInputOutput(validation_vocabulary, batch_size, batch_load_per_validation_step, inputmanipulator, outputmanipulator)

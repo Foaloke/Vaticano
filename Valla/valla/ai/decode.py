@@ -7,7 +7,7 @@ import json
 import tensorflow as tf
 from valla.ai.iterator_decode import batch_size
 from valla.ai.iterator_decode import max_decode_steps
-from valla.ai.iterator_decode import data_iterator_instance
+from valla.ai.iterator_decode import data_iterator_decode
 from valla.ai.iterator_decode import outputmanipulator
 from valla.ai.iterator_decode import prepare_batch
 from valla.ai.model import Seq2SeqModel
@@ -71,7 +71,7 @@ def decode():
             else:
                 fout = [fopen(FLAGS.decode_output, 'w')]
             
-            for idx, source_seq in enumerate(data_iterator_instance):
+            for idx, source_seq in enumerate(data_iterator_decode):
                 source, source_len = prepare_batch(source_seq)
                 # predicted_ids: GreedyDecoder; [batch_size, max_time_step, 1]
                 # BeamSearchDecoder; [batch_size, max_time_step, beam_width]

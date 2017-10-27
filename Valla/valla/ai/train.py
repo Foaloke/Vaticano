@@ -14,8 +14,9 @@ from valla.ai.iterator_training import batch_size
 from valla.ai.iterator_training import batch_load_per_epoch
 from valla.ai.iterator_training import max_epochs
 from valla.ai.iterator_training import prepare_train_batch
-from valla.ai.iterator_training import data_iterator_instance
 from valla.ai.iterator_training import max_input_size
+from valla.ai.iterator_training import data_iterator_training
+from valla.ai.iterator_validation import data_iterator_validation
 
 from valla.ai.iterator_training import display_frequency_in_steps
 from valla.ai.iterator_training import validation_frequency_in_steps
@@ -106,7 +107,7 @@ def train():
                       'current epoch:{}, max epoch:{}'.format(model.global_epoch_step.eval(), FLAGS.max_epochs)
                 break
 
-            for source_seq, target_seq in data_iterator_instance:
+            for source_seq, target_seq in data_iterator_training:
                 # Get a batch from training parallel data
                 source, source_len, target, target_len = prepare_train_batch(source_seq, target_seq)
                 
@@ -150,7 +151,7 @@ def train():
                     print 'Validation step'
                     valid_loss = 0.0
                     valid_sents_seen = 0
-                    for source_seq, target_seq in data_iterator_instance:                        
+                    for source_seq, target_seq in data_iterator_validation:                        
                         source, source_len, target, target_len = prepare_train_batch(source_seq, target_seq)
 
                         # Compute validation loss: average per word cross entropy loss

@@ -98,4 +98,4 @@ inputmanipulator = InputManipulator(writer, max_printed_word_width, max_printed_
 outputmanipulator = OutputManipulator(max_word_length*2)
 max_input_size = math.ceil(float(max_printed_area)/inputmanipulator.binary_encoding_power)
 
-data_iterator_instance = DataIteratorInputOutput(training_vocabulary, batch_size, batch_load_per_epoch, inputmanipulator, outputmanipulator)
+data_iterator_training = DataIteratorInputOutput(training_vocabulary, batch_size, batch_load_per_epoch, inputmanipulator, outputmanipulator)
