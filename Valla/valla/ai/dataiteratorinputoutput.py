@@ -49,4 +49,5 @@ class DataIteratorInputOutput(object):
 
 
     def create_sample(self, word):
+        print("["+word+"]")
         return self.inputmanipulator.writeAsInputData(word), self.outputmanipulator.writeAsOutputData(word)
