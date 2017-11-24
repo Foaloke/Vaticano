@@ -5,6 +5,7 @@ import time
 import json
 
 from collections import OrderedDict
+import valla.Logger as l 
 
 import numpy as np
 
@@ -68,13 +69,13 @@ def create_model(session, FLAGS):
 
     ckpt = tf.train.get_checkpoint_state(FLAGS.model_dir)
     if ckpt and tf.train.checkpoint_exists(ckpt.model_checkpoint_path):
-        print 'Reloading model parameters..'
+        l.info('Reloading model parameters..')
         model.restore(session, ckpt.model_checkpoint_path)
 
     else:
         if not os.path.exists(FLAGS.model_dir):
             os.makedirs(FLAGS.model_dir)
-        print 'Created new model parameters..'
+        l.info('Created new model parameters..')
         session.run(tf.global_variables_initializer())
    
     return model
@@ -100,11 +101,11 @@ def train():
         start_time = time.time()
 
         # Training loop
-        print 'Training (max epochs: {})..'.format(FLAGS.max_epochs)
+        l.info('Training (max epochs: {})..'.format(FLAGS.max_epochs))
         for _ in xrange(FLAGS.max_epochs):
             if model.global_epoch_step.eval() >= FLAGS.max_epochs:
-                print 'Training is already complete.', \
-                      'current epoch:{}, max epoch:{}'.format(model.global_epoch_step.eval(), FLAGS.max_epochs)
+                l.info('Training is already complete.\n' + \
+                      'current epoch:{}, max epoch:{}'.format(model.global_epoch_step.eval(), FLAGS.max_epochs))
                 break
 
             for source_seq, target_seq in data_iterator_training:
@@ -112,7 +113,7 @@ def train():
                 source, source_len, target, target_len = prepare_train_batch(source_seq, target_seq)
                 
                 if source is None or target is None:
-                    print 'No samples under max_seq_length ', FLAGS.max_seq_length
+                    l.info('No samples under max_seq_length ' + str(FLAGS.max_seq_length))
                     continue
 
                 # Execute a single training step
@@ -134,9 +135,9 @@ def train():
                     words_per_sec = words_seen / time_elapsed
                     sents_per_sec = sents_seen / time_elapsed
 
-                    print 'Epoch ', model.global_epoch_step.eval(), 'Step ', model.global_step.eval(), \
-                          'Perplexity {0:.2f}'.format(avg_perplexity), 'Step-time ', step_time, \
-                          '{0:.2f} sents/s'.format(sents_per_sec), '{0:.2f} words/s'.format(words_per_sec)
+                    l.info('Epoch ' + str(model.global_epoch_step.eval()) + '\nStep ' + str(model.global_step.eval()) + \
+                          '\nPerplexity {0:.2f}'.format(avg_perplexity) + '\nStep-time ' + str(step_time) + \
+                          '\n{0:.2f} sents/s'.format(sents_per_sec) + '\n{0:.2f} words/s'.format(words_per_sec))
 
                     loss = 0
                     words_seen = 0
@@ -148,7 +149,7 @@ def train():
 
                 # Execute a validation step
                 if model.global_step.eval() % FLAGS.valid_freq == 0:
-                    print 'Validation step'
+                    l.info('Validation step')
                     valid_loss = 0.0
                     valid_sents_seen = 0
                     for source_seq, target_seq in data_iterator_validation:                        
@@ -161,14 +162,14 @@ def train():
 
                         valid_loss += step_loss * current_batch_size
                         valid_sents_seen += current_batch_size
-                        print '  {} samples seen'.format(valid_sents_seen)
+                        l.info('  {} samples seen'.format(valid_sents_seen))
 
                     valid_loss = valid_loss / valid_sents_seen
-                    print 'Valid perplexity: {0:.2f}'.format(math.exp(valid_loss))
+                    l.info('Valid perplexity: {0:.2f}'.format(math.exp(valid_loss)))
 
                 # Save the model checkpoint
                 if model.global_step.eval() % FLAGS.save_freq == 0:
-                    print 'Saving the model..'
+                    l.info('Saving the model..')
                     checkpoint_path = os.path.join(FLAGS.model_dir, FLAGS.model_name)
                     model.save(sess, checkpoint_path, global_step=model.global_step)
                     json.dump(model.config,
@@ -177,13 +178,13 @@ def train():
 
             # Increase the epoch index of the model
             model.global_epoch_step_op.eval()
-            print 'Epoch {0:} DONE'.format(model.global_epoch_step.eval())
+            l.info('Epoch {0:} DONE'.format(model.global_epoch_step.eval()))
         
-        print 'Saving the last model..'
+        l.info('Saving the last model..')
         checkpoint_path = os.path.join(FLAGS.model_dir, FLAGS.model_name)
         model.save(sess, checkpoint_path, global_step=model.global_step)
         json.dump(model.config,
                   open('%s-%d.json' % (checkpoint_path, model.global_step.eval()), 'wb'),
                   indent=2)
         
-    print 'Training Terminated'
+    l.info('Training Terminated')

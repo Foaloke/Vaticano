@@ -81,7 +81,6 @@ def decode():
                 # Write decoding results
                 for k, f in reversed(list(enumerate(fout))):
                     for seq in predicted_ids:
-                        print(seq)
                         print(str(outputmanipulator.decode_words(seq)))
                         f.write(str(outputmanipulator.decode_words(seq)) + '\n')
                     if not FLAGS.write_n_best:
