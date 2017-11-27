@@ -11,11 +11,6 @@ class MailReport(object):
         self.smpt_server_address = smpt_server_address
         self.source_address = source_address
         self.destination_address = destination_address
-        
-        self.server = smtplib.SMTP(self.smpt_server_address)
-        self.server.ehlo()
-        self.server.starttls()
-
         self.user = user
         self.password = password
         
@@ -28,7 +23,9 @@ class MailReport(object):
     
     def send(self, subject):
         
-        
+        self.server = smtplib.SMTP(self.smpt_server_address)
+        self.server.ehlo()
+        self.server.starttls()
         self.server.login(self.user, self.password)
         self.server.sendmail(self.source_address, self.destination_address, 'Subject: {}\n\n{}'.format(subject, self.report))
         self.server.quit()
