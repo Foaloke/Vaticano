@@ -1,6 +1,8 @@
 LSTM/
+*.pyc
 .metadata
 .recommenders
+Valla/writer_out/test.png
 Valla/venv/
 Valla/model_checkpoints/
 DaGubbio/venv/
