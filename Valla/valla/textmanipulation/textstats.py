@@ -21,5 +21,5 @@ class TextStats(object):
         
     def vocabulary_in_file(self, source_dir, source_file):
         text = su.load_source(source_dir, source_file)
-        return text.split(' ')
+        return map(lambda s : s.encode('utf-8'), text.split(' '))
 
