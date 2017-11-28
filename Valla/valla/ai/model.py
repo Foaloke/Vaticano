@@ -27,22 +27,22 @@ class Seq2SeqModel(object):
         self.mode = mode.lower()
 
         self.cell_type = config['cell_type']
-        self.hidden_units = int(config['hidden_units'])
-        self.depth = int(config['depth'])
+        self.hidden_units = config['hidden_units']
+        self.depth = config['depth']
         self.attention_type = config['attention_type']
-        self.embedding_size = int(config['embedding_size'])
+        self.embedding_size = config['embedding_size']
         #self.bidirectional = config.bidirectional
        
-        self.num_encoder_symbols = int(config['num_encoder_symbols'])
-        self.num_decoder_symbols = int(config['num_decoder_symbols'])
+        self.num_encoder_symbols = config['num_encoder_symbols']
+        self.num_decoder_symbols = config['num_decoder_symbols']
 
         self.use_residual = config['use_residual']
         self.attn_input_feeding = config['attn_input_feeding']
         self.use_dropout = config['use_dropout']
-        self.keep_prob = 1.0 - float(config['dropout_rate'])
+        self.keep_prob = 1.0 - config['dropout_rate']
 
         self.optimizer = config['optimizer']
-        self.learning_rate = float(config['learning_rate'])
+        self.learning_rate = config['learning_rate']
         self.max_gradient_norm = config['max_gradient_norm']
         self.global_step = tf.Variable(0, trainable=False, name='global_step')
         self.global_epoch_step = tf.Variable(0, trainable=False, name='global_epoch_step')
@@ -54,9 +54,9 @@ class Seq2SeqModel(object):
 
         self.use_beamsearch_decode=False 
         if self.mode == 'decode':
-            self.beam_width = int(config['beam_width'])
+            self.beam_width = config['beam_width']
             self.use_beamsearch_decode = True if self.beam_width > 1 else False
-            self.max_decode_step = int(config['max_decode_step'])
+            self.max_decode_step = config['max_decode_step']
  
         self.build_model()
 

@@ -61,6 +61,7 @@ tf.app.flags.DEFINE_boolean('sort_by_length', True, 'Sort pre-fetched minibatche
 tf.app.flags.DEFINE_boolean('use_fp16', False, 'Use half precision float16 instead of float32 as dtype')
 
 FLAGS = tf.app.flags.FLAGS
+FLAGS._parse_flags()
 
 def create_model(session, FLAGS):
 
